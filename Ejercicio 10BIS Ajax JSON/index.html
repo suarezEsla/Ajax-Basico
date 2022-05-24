@@ -10,18 +10,53 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <title>Ejercicio 10 BIS Esla Suárez</title>
 </head>
 
 <body>
-
+    <style>
+        .wrapper {
+            height: 25vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .typing-demo {
+            width: 22ch;
+            animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid;
+            font-family: monospace;
+            font-size: 2em;
+        }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+        }
+        
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+    </style>
 
     <div class="container">
+        <div class="wrapper">
+            <div class="typing-demo">
+                AWS Group Politics
+            </div>
+        </div>
         <div class="section">
-            <button class="btn" id="boton">Obtener Json</button>
+            <button class="btn cyan lighten-1" id="boton">Obtener Json</button>
 
 
-            <h3>AWS Politics</h3>
+
             <table class="striped">
                 <thead>
                     <tr>
@@ -35,7 +70,7 @@
                 </tbody>
             </table>
         </div>
-        <footer class="page-footer">
+        <footer class="page-footer cyan lighten-1">
             <div class="container">
                 © 2022 Esla Suárez Arquero
                 <a class="grey-text text-lighten-4 right" href="https://github.com/suarezEsla">GitHub</a>
