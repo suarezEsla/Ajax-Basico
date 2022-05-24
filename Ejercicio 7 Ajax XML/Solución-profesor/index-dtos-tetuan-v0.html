@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AJAX</title>
+    <style>
+
+    </style>
+    <script>
+        var xhr;
+        var informacion;
+        var datos;
+
+        function enviarPeticionAJAX(evento) {
+            datos = new FormData(document.getElementById('formulario'));
+            xhr = new XMLHttpRequest();
+            xhr.addEventListener('readystatechange', gestionarRespuesta, false);
+            xhr.open('POST', 'ejemplo4.xml', true);
+            xhr.send(null);
+
+        }
+
+        function gestionarRespuesta(evento) {
+            if (evento.target.readyState == 4 && evento.target.status == 200) {
+                alert(evento.target.responseXML);
+                datos = evento.target.responseXML;
+                actualizarinformacion(datos);
+            }
+        }
+
+        function actualizarinformacion(xmlDoc) {
+            /*var i; 
+            var calificaciones = xmlDoc.getElementsByTagName('agenda'); 
+            for (i=0;i<calificaciones.length;i++){
+            	alert(calificaciones[i].length); 
+            	if(calificaciones[i].getAttribute('materia') == materia.value){ 
+            		calificacion.value = calificaciones[i].getAttribute('nota'); 
+            	} 
+            }*/
+
+            var minombre = xmlDoc.getElementsByTagName("nombre")[0].childNodes[0].nodeValue;
+            //escribimos el resultado en la página
+            informacion.innerHTML = "<p>Nombre :" + minombre + "</p>";
+            //hacemos lo mismo para el resto de etiquetas.
+            var miapellido = xmlDoc.getElementsByTagName("apellido")[0].childNodes[0].nodeValue;
+            informacion.innerHTML += "<p>Apellido :" + miapellido + "</p>";
+            var mitelefono = xmlDoc.getElementsByTagName("telefono")[0].childNodes[0].nodeValue;
+            informacion.innerHTML += "<p>Teléfono :" + mitelefono + "</p>";
+            var miemail = xmlDoc.getElementsByTagName("email")[0].childNodes[0].nodeValue;
+            informacion.innerHTML += "<p>E-mail :" + miemail + "</p>";
+        }
+
+        document.addEventListener('readystatechange', inicializar, false);
+
+        function inicializar() {
+            if (document.readyState == 'complete') {
+                informacion = document.getElementById('contenido');
+                enviarPeticionAJAX();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form id='formulario'>
+        <h1>Datos de documento XML con AJAX</h1>
+        <div id="contenido"></div>
+    </form>
+</body>
+
+</html>
