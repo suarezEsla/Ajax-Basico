@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 150px;
+        }
+    </style>
+    <div class="container">
+
+        <div class="row">
+            <div class="input-field col s6">
+                <input value="Legajo" id="legajo" type="text" class="validate">
+            </div>
+            <a class="waves-effect waves-light btn-small" id="button">Consultar</a>
+        </div>
+        <div class="res">
+
+        </div>
+    </div>
+    <script>
+        var boton = document.querySelector('#button').addEventListener('click', consultarLegajo)
+
+
+        function consultarLegajo() {
+            var obj = new XMLHttpRequest();
+            obj.onreadystatechange = function() {
+                if (obj.readyState == 4) {
+                    if (obj.status == 200) {
+                        var res = document.querySelector('.res')
+
+                        //res.innerHTML = obj.responseText
+                        res.innerHTML += `
+                     
+                <h5>${obj.responseText}<h5>
+                `
+
+
+
+
+                    } else {
+                        alert('Error Code: ' + obj.status);
+                        alert('Error Message: ' + obj.statusText);
+                    }
+                }
+            }
+            obj.open('POST', 'Legajos.php');
+            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            obj.send("legajo=" + document.getElementById("legajo").value);
+        }
+    </script>
+</body>
+
+</html>
