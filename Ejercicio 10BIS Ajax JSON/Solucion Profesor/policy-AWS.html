@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>SUPERHEROES QUE IMPARTEN JUSTICIA</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Faster+One" rel="stylesheet">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+    <header>
+        <!-- <h2>ESPERANDO CONEXIÓN A BBDD . . .   . .   .</h2> -->
+    </header>
+
+    <section>
+
+    </section>
+
+    <script>
+        //URLs de interés:
+        //https://developer.mozilla.org/es/docs/Learn/JavaScript/Objects/JSON;
+        //let requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
+        var cabecera;
+        var seccion;
+        var temporizador;
+        var requestObject;
+        var superHeroesObject;
+        document.addEventListener("DOMContentLoaded", inicializar, false);
+
+        function inicializar() {
+            cabecera = document.querySelector('header');
+            seccion = document.querySelector('section');
+            temporizador = setTimeout(enviopeticionAJAX, 3000);
+        }
+
+        function enviopeticionAJAX() {
+            //Lo siguiente devuelve [object HTMLHeadingElement] por ser h2 el primer hijo (objeto de tipo HTMLElement)
+            //alert(cabecera.firstElementChild);
+            /*
+             Se aconseja ver la diferencia entre firstChild y firstElementChild
+             while (cabecera.firstChild){
+               cabecera.removeChild(cabecera.firstChild);
+             }*/
+            while (cabecera.firstElementChild) {
+                cabecera.removeChild(cabecera.firstElementChild);
+            }
+            requestObject = new XMLHttpRequest();
+            requestObject.addEventListener("readystatechange", gestionarrespuesta, false);
+            //Si se activa la siguiente orden:
+            //requestObject.responseType='json';
+            //ir a gestionarrespuesta.
+            requestObject.open("GET", "politicas.json", true);
+            requestObject.send(null);
+        }
+
+        function gestionarrespuesta(e) {
+            if (e.target.readyState == 4 && e.target.status == 200) {
+                politicasObject = JSON.parse(requestObject.responseText);
+                //entonces habría que desactivar el JSON.Parse.... anterior y 
+                //la respuesta habría que controlarla con la siguiente sentencia:
+                //superHeroesObject=requestObject.response;
+                console.log(politicasObject);
+                completarCabecera(politicasObject);
+                //completarSeccion(superHeroesObject);
+                temporizador = setTimeout(completarSeccion(politicasObject), 5000);
+            }
+        }
+
+        function completarCabecera(obj) {
+            const eleH1 = document.createElement('h1');
+            eleH1.textContent = obj['Version'];
+            cabecera.appendChild(eleH1);
+
+            const elePara = document.createElement('p');
+            elePara.textContent = 'Statement';
+            cabecera.appendChild(elePara);
+        }
+
+        function completarSeccion(obj) {
+            const opciones = obj['Statement'];
+
+            for (let i = 0; i < opciones.length; i++) {
+                const eleArticle = document.createElement('article');
+                const eleH2 = document.createElement('h2');
+                const elePara1 = document.createElement('p');
+                const elePara2 = document.createElement('p');
+                const elePara3 = document.createElement('p');
+                const eleList = document.createElement('ul');
+
+                eleH2.textContent = "Opción " + [i];
+                elePara1.textContent = 'Efecto: ' + opciones[i].Effect;
+                elePara2.textContent = 'Recursos: ' + opciones[i].Resource;
+                elePara3.textContent = 'Acciones:';
+
+                const acciones = opciones[i].Action;
+                for (let j = 0; j < acciones.length; j++) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = acciones[j];
+                    eleList.appendChild(listItem);
+                }
+
+                eleArticle.appendChild(eleH2);
+                eleArticle.appendChild(elePara1);
+                eleArticle.appendChild(elePara2);
+                eleArticle.appendChild(elePara3);
+                eleArticle.appendChild(eleList);
+
+                seccion.appendChild(eleArticle);
+            }
+        }
+    </script>
+</body>
+
+</html>
